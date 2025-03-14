@@ -1,0 +1,16 @@
+---
+- name: Deploy Maven Artifact
+  hosts: app_servers
+  become: yes
+
+  tasks:
+    - name: Copy Artifact to Server
+      copy:
+        src: target/myapp.jar  # Ensure this matches your built artifact
+        dest: /opt/myapp/myapp.jar
+        mode: '0755'
+
+    - name: Restart Application
+      systemd:
+        name: myapp
+        state: restarted
